@@ -1,0 +1,174 @@
+* This member contains all the details for a system SHUTDOWN. It     
+* uses the following entries:                                        
+*                                                                    
+*      * = comment                                                   
+*      } = just output a message to the operator on the console      
+*      ~ = wait a number of seconds before continuing                
+*      { = enter a command                                           
+*                                                                    
+* Examples:                                                          
+*                                                                    
+* }SHUTDOWN of SYSA will start in 60 seconds                         
+* (this outputs the above text on the console in red)                
+*                                                                    
+* ~60                                                                
+* (waits 60 seconds before continuing                                
+*                                                                    
+* {D A,L                                                             
+* (enters the above command)                                         
+*                                                                    
+* Updates:                                                           
+*                                                                    
+*                                                                    
+}PART 1 OF SYSTEM SHUTDOWN                                           
+*                                                                    
+~10                                                                  
+*                                                                    
+* Unload all cartridge drives                                        
+*                                                                    
+{U 361                                                               
+*                                                                    
+{U 362                                                               
+*                                           
+{U 363                                      
+*                                           
+{U 3C0                                      
+*                                           
+{U 3C3                                      
+*                                           
+{U 3B0                                      
+*                                           
+{U 3B1                                      
+*                                           
+{$PPRT1                                     
+*                                           
+{D A,L                                      
+*                                           
+* Stop all the ICLI servers                 
+*                                           
+{P ICLI1T1                                  
+*                                           
+{P ICLI1T2                                  
+*                                           
+{P ICLI1T3                                  
+*                                           
+{P ICLI1T4                                  
+*                                           
+}PART 2 OF SYSTEM SHUTDOWN                  
+*                                           
+* Stop all the database servers             
+*                                           
+~20                                         
+*                                           
+{-DBT1 STOP DB2                             
+*                                           
+~5                                          
+*                                           
+{-DBT2 STOP DB2                             
+*                                           
+~5                                          
+*                                        
+{-DBT3 STOP DB2                          
+*                                        
+~5                                       
+*                                        
+{-DBT4 STOP DB2                          
+*                                        
+}PART 3 OF SYSTEM SHUTDOWN               
+*                                        
+* Stop a number of system tasks          
+*                                        
+~30                                      
+*                                        
+{D A,L                                   
+*                                        
+{P IMWEBSRV                              
+*                                        
+{P RMFGAT                                
+*                                        
+{C INETD1                                
+*                                        
+{P DFRMM                                 
+*                                        
+{F DLF,MODE=DRAIN                        
+*                                        
+{F TSO,USER=SIC                          
+*                                        
+~20                                      
+*                                        
+{P GPMSERVE                              
+*                                        
+{F TSO,USER=FSTOP                        
+*                                        
+{P RMF                                   
+*                                        
+{P DFHSM                                 
+*                                        
+{SETRRS CANCEL                           
+*                                     
+{P SDSF                               
+*                                     
+{P CRON6                              
+*                                     
+}PART 4 OF SYSTEM SHUTDOWN            
+*                                     
+* Stop network services               
+*                                     
+~10                                   
+*                                     
+{D A,L                                
+*                                     
+{P TSO                                
+*                                     
+}REPLY YES TO FFST MESSAGE            
+*                                     
+{P FFST                               
+*                                     
+~5                                    
+*                                     
+}REPLY YES TO FFST MESSAGE            
+*                                     
+{P TCPIP                              
+*                                     
+~10                                   
+*                                     
+{Z NET,QUICK                          
+*                                     
+{P OAM1                               
+*                                     
+{P DLF                                
+*                                     
+{C CRON6                              
+*                                     
+{P SMSMONT                            
+*                                     
+~5                                    
+*                                               
+{%STOP                                          
+*                                               
+{F BPXOINIT,SHUTDOWN=FORKINIT                   
+*                                               
+{P LLA                                          
+*                                               
+~5                                              
+*                                               
+{P VLF                                          
+*                                               
+~10                                             
+*                                               
+{F BPXOINIT,SHUTDOWN=FORKINIT                   
+*                                               
+~10                                             
+*                                               
+}CHECK FOR RUNNING TASKS                        
+*                                               
+}STOP JES2 IF ALL ARE STOPPED - $PJES2,TERM     
+*                                               
+}SYSTEM SHOULD BE STOPPED NOW                   
+*                                               
+~5                                              
+*                                               
+}USE Z EOD AND THEN QUIESCE                     
+*                                               
+~5                                              
+*                                               

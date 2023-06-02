@@ -1,0 +1,140 @@
+* This member contains all the details for a system STARTUP. It   
+* uses the following entries:                                     
+*                                                                 
+*      * = comment                                                
+*      } = just output a message to the operator on the console   
+*      ~ = wait a number of seconds before continuing             
+*      { = enter a command                                        
+*                                                                 
+* Examples:                                                       
+*                                                                 
+* }STARTUP of SYSA will start in 60 seconds                       
+* (this outputs the above text on the console in red)             
+*                                                                 
+* ~60                                                             
+* (waits 60 seconds before continuing)                            
+*                                                                 
+* {D A,L                                                          
+* (enters the above command)                                      
+*                                                                 
+* Updates:                                                        
+*                                                                 
+*                                                                 
+}PART 1 OF SYSTEM STARTUP                                         
+*                                                                 
+* Start all the database servers                                  
+*                                                                 
+~5                                                                
+*                                                                 
+{-DBT1 START DB2                                                  
+*                                                                 
+~5                                                                
+*                                                                 
+{-DBT2 START DB2                                                  
+*                                                                 
+~5                                                                
+*                                                             
+{-DBT3 START DB2                                              
+*                                                             
+~5                                                            
+*                                                             
+{-DBT4 START DB2                                              
+*                                                             
+}PART 2 OF SYSTEM STARTUP                                     
+*                                                             
+* Start all the ICLI servers                                  
+*                                                             
+~60                                                           
+*                                                             
+{D A,L                                                        
+*                                                             
+~20                                                           
+*                                                             
+{S ICLI1T1                                                    
+*                                                             
+{S ICLI1T2                                                    
+*                                                             
+{S ICLI1T3                                                    
+*                                                             
+{S ICLI1T4                                                    
+*                                                             
+}PART 3 OF SYSTEM STARTUP                                     
+*                                                             
+* Start any other tasks required                              
+*                                                             
+~10                                                           
+*                                                             
+{S GPMSERVE                                                   
+*                                                             
+{S IMWEBSRV                                                   
+*                                                             
+}SYSTEM STARTUP COMPLETED                                     
+*                                                             
+~10                                                           
+*                                  
+}SAP SYSTEMS CAN BE STARTED        
+*                                  
+}DISPLAYING SYSTEM STATUS          
+*                                  
+{D T                               
+*                                  
+~5                                 
+*                                  
+*S SMSMONT                         
+*                                  
+{D ASM                             
+*                                  
+{TRACE STATUS                      
+*                                  
+{D TRACE                           
+*                                  
+{D M=CPU                           
+*                                  
+{D M=STOR                          
+*                                  
+~5                                 
+*                                  
+{D D,O                             
+*                                  
+{D D,S                             
+*                                  
+{D OPDATA                          
+*                                  
+{D IPLINFO                         
+*                                  
+{D PARMLIB                         
+*                                  
+~5                                 
+*                                  
+{D SSI,ALL                         
+*                                  
+{D SLIP                            
+*                        
+{D IOS,CONFIG(ALL)       
+*                        
+{D IOS,MIH,TIME=ALL      
+*                        
+{D M                     
+*                        
+~5                       
+*                        
+{D PROG,EXIT             
+*                        
+{D PROG,APF              
+*                        
+{D A,L                   
+*                        
+{V 361,ONLINE            
+*                        
+{V 3C3,ONLINE            
+*                        
+{V 3B0-3B1,ONLINE        
+*                        
+{$SPRT1                  
+*                        
+~5                       
+*                        
+{T MPF=00                
+*                        
+{$SPRT1                  
+*                        
